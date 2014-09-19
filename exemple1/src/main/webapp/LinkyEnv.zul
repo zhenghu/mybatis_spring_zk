@@ -1,0 +1,30 @@
+<!--<?taglib uri="http://www.zkoss.org/dsp/web/core" prefix="c" ?>-->
+<?meta http-equiv="refresh" content="5" ?>
+<zk>
+  <style src="/widgets/grid/simple/style.css" />
+  <div apply="fr.edf.distribution.linkyenv.ui.control.EnvironmentStatusTableController" width="100%">
+    <grid id="envGrid" sclass="linkyenv-table" height="100%" width="100%" model="${$composer.initEnvironments}">
+      <auxhead>
+        <auxheader colspan="4" label="LinkyDep" />
+      </auxhead>
+      <columns>
+        <column sclass="header last" label="Environnement" width="120px" />
+        <column style="text-align:right;" width="80px" forEach="${$composer.applications}" label="${each}" />
+      </columns>
+      <template name="model">
+        <row>
+          <cell sclass="environments">
+            <label value="${each.envName}" />
+          </cell>
+          <box forEach="${$composer.status}">
+            <textbox autag="${each.appNames[forEachStatus.index]}" width="55px" inplace="true"
+              value="${each.versions[forEachStatus.index]}" />
+            <button label="${each.appNames[forEachStatus.index]}"
+              style="${each.statuses[forEachStatus.index] ? 'background-color:green;':'background-color:red;'}"
+              height="30px" width="100%" />
+          </box>
+        </row>
+      </template>
+    </grid>
+  </div>
+</zk>

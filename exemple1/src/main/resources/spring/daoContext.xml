@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+  <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+    <property name="dataSource" ref="dataSource" />
+    <property name="configLocation" value="classpath:/mybatis/mybatis-config.xml" />
+    <property name="databaseIdProvider">
+      <bean id="databaseIdProvider" class="org.apache.ibatis.mapping.VendorDatabaseIdProvider">
+        <property name="properties">
+          <props>
+            <prop key="SQL Server">sqlserver</prop>
+            <prop key="DB2">db2</prop>
+            <prop key="H2">h2</prop>
+            <prop key="Oracle">oracle</prop>
+            <prop key="MySQL">mysql</prop>
+          </props>
+        </property>
+      </bean>
+    </property>
+  </bean>
+  <bean id="abstractDao" class="org.mybatis.spring.mapper.MapperFactoryBean" abstract="true">
+    <property name="sqlSessionFactory" ref="sqlSessionFactory" />
+  </bean>
+  <bean id="environmentsDao" parent="abstractDao">
+    <property name="mapperInterface" value="fr.edf.distribution.linkyenv.dao.EnvironmentsDao" />
+  </bean>
+</beans>

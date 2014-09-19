@@ -1,0 +1,19 @@
+<assembly>
+  <id>assembly</id>
+  <formats>
+    <format>zip</format>
+  </formats>
+  <baseDirectory>/</baseDirectory>
+  <fileSets>
+    <fileSet>
+      <outputDirectory>/</outputDirectory>
+      <directory>${project.basedir}/src/main/webapp/</directory>
+      <includes>
+        <include>css/*.*</include>
+        <include>image/**/*.*</include>
+        <include>js/**/*.*</include>
+        <include>favicon.ico</include>
+      </includes>
+    </fileSet>
+  </fileSets>
+</assembly>

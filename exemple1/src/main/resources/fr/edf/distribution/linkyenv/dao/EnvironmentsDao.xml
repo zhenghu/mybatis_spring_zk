@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="fr.edf.distribution.linkyenv.dao.EnvironmentsDao">
+
+  <resultMap id="EnvironmentsResultMap" type="fr.edf.distribution.linkyenv.model.Environment">
+    <id property="id" column="id" />
+    <result property="environment" column="environment" />
+    <result property="application" column="application" />
+    <result property="version" column="version" />
+    <result property="status" column="status" />
+  </resultMap>
+
+  <select id="getEnvironmentNames" resultType="String">
+    SELECT DISTINCT
+      environment
+    FROM t_environments
+  </select>
+
+  <select id="getApplicationsNames" resultType="String">
+    SELECT DISTINCT
+      application
+    FROM t_environments
+    ORDER BY application
+  </select>
+
+  <select id="getEnvironmentByName" resultMap="EnvironmentsResultMap">
+    SELECT
+      application,
+      version,
+      status
+    FROM t_environments
+    WHERE environment = #{environmentName}
+    ORDER BY application
+  </select>
+
+  <update id="updateStatusFor">
+    UPDATE t_environments
+    SET status = #{newStatus}
+    WHERE environment = #{envName} AND application = #{appName}
+  </update>
+
+  <update id="updateVersionFor">
+    UPDATE t_environments
+    SET version = #{newVersion}
+    WHERE environment = #{envName} AND application = #{appName}
+  </update>
+</mapper>

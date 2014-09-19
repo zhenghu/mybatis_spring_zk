@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xmlns:context="http://www.springframework.org/schema/context"
+  xmlns:jdbc="http://www.springframework.org/schema/jdbc"
+  xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd http://www.springframework.org/schema/jdbc http://www.springframework.org/schema/jdbc/spring-jdbc.xsd">
+  <context:annotation-config />
+
+  <jdbc:embedded-database id="dataSource" type="H2">
+    <jdbc:script location="classpath:/h2/schema.sql" />
+    <jdbc:script location="classpath:/h2/test-data.sql" />
+  </jdbc:embedded-database>
+
+  <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+    <property name="dataSource" ref="dataSource" />
+    <property name="configLocation" value="classpath:/mybatis/mybatis-config.xml" />
+  </bean>
+
+  <bean id="mapper" class="org.mybatis.spring.mapper.MapperFactoryBean">
+    <property name="mapperInterface" value="fr.edf.distribution.linkyenv.dao.EnvironmentsDao" />
+    <property name="sqlSessionFactory" ref="sqlSessionFactory" />
+  </bean>
+
+  <bean id="abstractDao" class="org.mybatis.spring.mapper.MapperFactoryBean" abstract="true">
+    <property name="sqlSessionFactory" ref="sqlSessionFactory" />
+  </bean>
+
+  <bean id="environmentsDao" parent="abstractDao">
+    <property name="mapperInterface" value="fr.edf.distribution.linkyenv.dao.EnvironmentsDao" />
+  </bean>
+
+</beans>
